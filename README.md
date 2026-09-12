@@ -1,18 +1,22 @@
 # THREADLINE storefront
 
-An editorial apparel storefront prototype with an in-browser content editor.
+A Next.js 15 + React 19 + TypeScript apparel storefront, exported as a static site for GitHub Pages.
 
-## Open locally
+## Local development
 
-Serve this folder with any static web server, then open `index.html`.
+```bash
+npm install
+npm run dev
+```
 
-## Pages
+Open `http://localhost:3000`. Create a production export with `npm run build`; the deployable site is written to `out/`.
 
-- `index.html` — storefront homepage and bag flow
-- `shop.html` — product catalogue
-- `collections.html` — apparel collections
-- `journal.html` — editorial journal
-- `story.html` — brand story
-- `admin.html` — no-code homepage and product editor
+## App structure
 
-The prototype editor uses browser-local storage. A production deployment should connect it to authenticated, hosted storage before use by a team.
+- `src/app` — homepage plus Shop, Collections, Journal, Story and Admin routes
+- `src/components` — reusable header, cart drawer, product card and page-rail components
+- `src/context` — client-side bag state
+- `src/lib/catalog.ts` — typed product catalogue data
+- `public/images` — storefront image assets
+
+The admin route is a React interface that currently saves a local draft in the browser. Connect it to an authenticated Supabase project before using it as a shared production CMS.
