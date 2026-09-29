@@ -1,12 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useCart } from "@/context/cart-context";
-
-const links = [{ href: "/shop", label: "Shop" }, { href: "/collections", label: "Collections" }, { href: "/journal", label: "Journal" }, { href: "/story", label: "Our story" }];
+import { FoldableMegaMenu } from "./foldable-mega-menu";
 
 export function SiteHeader() {
-  const pathname = usePathname(); const { items, open } = useCart();
-  return <><div className="announcement">Free shipping across India on orders over ₹2,500 <span>•</span> Limited first drop now live</div><header className="site-header"><Link className="brand" href="/">THREADLINE<span>®</span></Link><nav>{links.map((link) => <Link key={link.href} className={pathname === link.href ? "active" : ""} href={link.href}>{link.label}</Link>)}</nav><div className="header-actions"><Link className="editor-link" href="/admin">Editor</Link><button className="bag-button" onClick={open}>Bag <b>{items.length}</b></button></div></header></>;
+  const { items, open } = useCart();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <>
+      <header className="site-header">
+        {/* Top-Left: Hamburger trigger inside a thin-bordered box */}
+        <button
+          className="menu-trigger"
+          onClick={() => setIsMenuOpen(true)}
+          aria-label="Open menu"
+          aria-expanded={isMenuOpen}
+        >
+          <span className="menu-line" />
+          <span className="menu-line" />
+        </button>
+
+        {/* Right-side actions — exactly like the Zara screenshot */}
+        <div className="header-actions">
+          <button className="header-action search-action" onClick={() => setIsMenuOpen(true)}>
+            SEARCH
+          </button>
+          <button className="header-action bag-action" onClick={open}>
+            BAG&nbsp;&nbsp;[&nbsp;{items.length}&nbsp;]
+          </button>
+          <Link className="header-action" href="/story">LOG IN</Link>
+          <Link className="header-action" href="/story#care">HELP</Link>
+        </div>
+      </header>
+
+      <FoldableMegaMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+    </>
+  );
 }
